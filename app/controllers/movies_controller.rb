@@ -22,7 +22,12 @@ class MoviesController < ApplicationController
     if @ratings_to_show.nil?
       @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
     end
-    @movies = Movie.with_ratings(@ratings_to_show)
+    @mov = 0
+    sort = params[:sort]
+    if !sort.nil? and sort == "1"
+      @mov = "hilite p-3 mb-2 bg-warning text-primary"
+    end
+    @movies = Movie.with_ratings(@ratings_to_show, sort)
   end
 
   def new

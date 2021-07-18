@@ -18,9 +18,17 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th>
+        <%= link_to movies_path(:sort => 1), method: :get, id: 'title_header', :class => @mov do %>
+        Movie Title
+        <% end %>
+      </th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th> 
+        <%= link_to movies_path(:sort => 2), method: :get, id: 'release_date_header' do %>
+        Release Date 
+        <% end %>
+      </th>
       <th>More Info</th>
     </tr>
   </thead>
