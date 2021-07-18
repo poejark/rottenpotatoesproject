@@ -14,4 +14,3 @@ class Movie < ActiveRecord::Base
 #     Movie.where(rating: ratings.map(&:downcase))
   end
 end
-"lower(email) =?", email.downcase
