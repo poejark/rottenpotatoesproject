@@ -2,15 +2,18 @@ class Movie < ActiveRecord::Base
   
   
   def self.all_ratings
-    Movie.uniq.pluck(:rating)
+    return ['G', 'PG', 'PG-13', 'R']
+    
+#     Movie.uniq.pluck(:rating)
   end
   
-  def self.with_ratings(ratings)
-    if ratings.nil?
-      Movie.all
+  def self.with_ratings(ratings_list)
+    
+    if ratings_list.nil?
+      return Movie.all
     else
-      Movie.where("lower(rating) IN ?", ratings.map(&:downcase))
+      return Movie.where(rating: ratings_list.keys)
     end
-#     Movie.where(rating: ratings.map(&:downcase))
+    
   end
 end
