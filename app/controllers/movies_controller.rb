@@ -1,5 +1,8 @@
 class MoviesController < ApplicationController
-
+  
+  @all_ratings = Movie.all_ratings
+  @ratings_to_show = params[:ratings].each_key
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -7,7 +10,8 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    ratings = @ratings_to_show.map(&:downcase)
+    @movies = Movie.with_ratings(@ratings_to_show)
   end
 
   def new
@@ -19,7 +23,7 @@ class MoviesController < ApplicationController
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to movies_path
   end
-
+  
   def edit
     @movie = Movie.find params[:id]
   end
