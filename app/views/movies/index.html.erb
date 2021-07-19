@@ -19,13 +19,14 @@
   <thead>
     <tr>
       <th>
-        <%= link_to movies_path(:sort => 1), method: :get, id: 'title_header', :class => @mov do %>
+        
+        <%= link_to movies_path(:sorts_current_list => "1", :ratings => @ratings_to_show), method: :get, id: 'title_header', :class => @mov do %>
         Movie Title
         <% end %>
       </th>
       <th>Rating</th>
       <th> 
-        <%= link_to movies_path(:sort => 2), method: :get, id: 'release_date_header' do %>
+        <%= link_to movies_path(:sorts_current_list => "2", ratings: @ratings_to_show), method: :get, id: 'release_date_header' do %>
         Release Date 
         <% end %>
       </th>

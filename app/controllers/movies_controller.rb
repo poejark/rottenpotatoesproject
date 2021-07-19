@@ -10,20 +10,29 @@ class MoviesController < ApplicationController
   end
 
   def index
+#     sort => 1 means movie_title by ASC
+  #   sort => 2 means release_date by ASC
+     #pass_sorts => 1 means pass the sorted movies to the controller, instead of getting them from params
+     
+    
+    
 #     ratings = @ratings_to_show.map(&:downcase)
     @all_ratings = Movie.all_ratings
+    
+    
     @ratings_to_show = params[:ratings]
-#     ratings = params[:ratings].each_key
-#     if ratings.length <= 0
-#       @ratings_to_show = []
-#     else
-#       @ratings_to_show = ratings
-#     end
+    
+    
+#     If it's not sorting a current list, then assumes a current list DNE, and assigns it via the refresh
+#     Otherwise, @ratings_to_show already exists as a hash
+    
+      
     if @ratings_to_show.nil?
-      @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
+      @ratings_to_show = Hash[@all_ratings.collect {|x| [x, "1"]}]
+#       @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
     end
     @mov = 0
-    sort = params[:sort]
+    sort = params[:sorts_current_list]
     if !sort.nil? and sort == "1"
       @mov = "hilite p-3 mb-2 bg-warning text-primary"
     end
