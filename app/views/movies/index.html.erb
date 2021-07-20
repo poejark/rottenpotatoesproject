@@ -20,13 +20,13 @@
     <tr>
       <th>
         
-        <%= link_to movies_path(:sorts_current_list => "1", :ratings => @ratings_to_show), method: :get, id: 'title_header', :class => @mov do %>
+        <%= link_to movies_path(:sorts_current_list => "1", :home => "1"), method: :get, id: 'title_header', :class => @mov do %>
         Movie Title
         <% end %>
       </th>
       <th>Rating</th>
       <th> 
-        <%= link_to movies_path(:sorts_current_list => "2", ratings: @ratings_to_show), method: :get, id: 'release_date_header' do %>
+        <%= link_to movies_path(:sorts_current_list => "2", :home => "1"), method: :get, id: 'release_date_header' do %>
         Release Date 
         <% end %>
       </th>
@@ -46,10 +46,10 @@
           <%= movie.release_date %>
         </td>
         <td>
-          <%= link_to "More about #{movie.title}", movie_path(movie) %>
+          <%= link_to "More about #{movie.title}", movie_path(movie, :home => "1") %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<%= link_to 'Add new movie', new_movie_path, :class => 'btn btn-primary' %>
+<%= link_to 'Add new movie', new_movie_path(:home => "1"), :class => 'btn btn-primary' %>

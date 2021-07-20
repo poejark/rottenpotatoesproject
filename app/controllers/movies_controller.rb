@@ -1,5 +1,7 @@
 class MoviesController < ApplicationController
   
+  before_action :get_cookie_state
+  after_action :store_cookie_state
 #   @all_ratings = Movie.all_ratings
 #   @ratings_to_show = params[:rating].each_key
   
@@ -19,18 +21,42 @@ class MoviesController < ApplicationController
 #     ratings = @ratings_to_show.map(&:downcase)
     @all_ratings = Movie.all_ratings
     
-    
+#     if session[:sorted_list] != "1"
+#       @ratings_to_show = params[:ratings]
+#     end
+#     if @rating_replaced != "1"
+# #       if ratings were not replaced
+#       @ratings_to_show = params[:ratings]
+      
+#       if @ratings_to_show.nil?
+#       @sort_exists = "2"
+#       @ratings_to_show = Hash[@all_ratings.collect {|x| [x, "1"]}]
+# #       @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
+#       else
+#         @sort_exists = "1"
+#       end
+      
+#     end
+    if !params[:home].nil?
+#       if from the homepage, defer to new inputs
     @ratings_to_show = params[:ratings]
-    
-    
+    end
+#     Otherwise, keep the cookie loaded ratings
+#     
+    if @ratings_to_show.nil?
+      @sort_exists = "2"
+      @ratings_to_show = Hash[@all_ratings.collect {|x| [x, "1"]}]
+#       @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
+      else
+        @sort_exists = "1"
+      end
+#     
+#     
 #     If it's not sorting a current list, then assumes a current list DNE, and assigns it via the refresh
 #     Otherwise, @ratings_to_show already exists as a hash
     
       
-    if @ratings_to_show.nil?
-      @ratings_to_show = Hash[@all_ratings.collect {|x| [x, "1"]}]
-#       @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
-    end
+    
     @mov = 0
     sort = params[:sorts_current_list]
     if !sort.nil? and sort == "1"
@@ -73,4 +99,27 @@ class MoviesController < ApplicationController
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
   end
+  
+  def get_cookie_state
+    
+    if !YAML.load(session[:stored]).nil?
+      @ratings_to_show = YAML.load(session[:rating_hash])
+    end
+  end
+  
+  def store_cookie_state
+    
+    if !params[:home].blank?
+      session[:stored] = params[:home].to_yaml
+#       if its coming from homepage
+#       list already sorted
+      session[:rating_hash] = @ratings_to_show.to_yaml
+      
+#       if @sort_exists == "1"
+#         session[:sort_exists] = "1".to_yaml
+        
+#       end
+    end
+  end
+  
 end
