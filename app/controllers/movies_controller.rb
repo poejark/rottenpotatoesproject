@@ -1,5 +1,4 @@
 class MoviesController < ApplicationController
-  
 #   @all_ratings = Movie.all_ratings
 #   @ratings_to_show = params[:rating].each_key
   
@@ -23,20 +22,37 @@ class MoviesController < ApplicationController
     @ratings_to_show = params[:ratings]
     
     
+    
 #     If it's not sorting a current list, then assumes a current list DNE, and assigns it via the refresh
 #     Otherwise, @ratings_to_show already exists as a hash
     
       
     if @ratings_to_show.nil?
+       
+#       Overwrite ratings with cookie?
+#       byebug
+      
       @ratings_to_show = Hash[@all_ratings.collect {|x| [x, "1"]}]
+      
+      if !session[:saved_ratings].nil? and params[:action] == "index"
+        @ratings_to_show = session[:saved_ratings]
+      end
 #       @ratings_to_show = [['G', 1], ['PG', 1], ['PG-13', 1], ['R', 1]].to_h
+    else 
+      session[:saved_ratings] = @ratings_to_show
     end
+    
+    
     @mov = 0
     sort = params[:sorts_current_list]
     if !sort.nil? and sort == "1"
       @mov = "hilite p-3 mb-2 bg-warning text-primary"
     end
     @movies = Movie.with_ratings(@ratings_to_show, sort)
+    
+    
+    
+    
   end
 
   def new
